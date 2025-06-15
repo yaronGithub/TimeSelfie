@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.timeselfie.data.models.TimelineItem
+import com.example.timeselfie.ui.components.TimelineThumbnailImage
 import com.example.timeselfie.ui.theme.*
 import com.example.timeselfie.utils.date.DateUtils
 
@@ -78,6 +79,7 @@ fun TimelineScreen(
                                         .padding(paddingValues)
                                         .background(BackgroundLight)
                 ) {
+                        val errorMessage = uiState.error
                         when {
                                 uiState.isLoading -> {
                                         Box(
@@ -85,14 +87,13 @@ fun TimelineScreen(
                                                 contentAlignment = Alignment.Center
                                         ) { CircularProgressIndicator(color = Primary) }
                                 }
-                                uiState.error != null -> {
-                                        val errorMessage = uiState.error!!
+                                errorMessage != null -> {
                                         Box(
                                                 modifier = Modifier.fillMaxSize(),
                                                 contentAlignment = Alignment.Center
                                         ) {
                                                 Text(
-                                                        text = "Error: $errorMessage",
+                                                        text = "Error: ${errorMessage}",
                                                         color = ErrorLight,
                                                         textAlign = TextAlign.Center
                                                 )
@@ -157,13 +158,14 @@ private fun TimelineGridItem(item: TimelineItem, onClick: () -> Unit) {
                                 )
                                 .clickable { onClick() }
         ) {
-                if (!item.isEmpty && item.thumbnailPath != null) {
-                        // Show thumbnail image
-                        Image(
-                                painter = rememberAsyncImagePainter(item.thumbnailPath),
+                if (!item.isEmpty && (item.thumbnailPath != null || item.imagePath != null)) {
+                        // Show optimized thumbnail image
+                        TimelineThumbnailImage(
+                                imagePath = item.imagePath,
+                                thumbnailPath = item.thumbnailPath,
                                 contentDescription = "Selfie for ${item.date}",
                                 modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Crop
+                                size = 80.dp // Optimize for grid cell size
                         )
 
                         // Mood overlay

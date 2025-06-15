@@ -2,9 +2,11 @@ package com.example.timeselfie.utils.export
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaScannerConnection
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.example.timeselfie.data.database.entities.CapsuleEntry
+import com.example.timeselfie.utils.performance.PerformanceMonitor
 import com.example.timeselfie.utils.storage.ImageStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,51 +35,57 @@ class ExportManager @Inject constructor(
     suspend fun exportCapsule(
         capsuleName: String,
         entries: List<CapsuleEntry>
-    ): ExportResult = withContext(Dispatchers.IO) {
-        try {
-            if (entries.isEmpty()) {
-                return@withContext ExportResult.Error("No entries to export")
-            }
-            
-            // Get image paths from entries
-            val imagePaths = entries
-                .sortedBy { it.dayNumber }
-                .mapNotNull { entry ->
-                    val file = File(entry.imagePath)
-                    if (file.exists()) entry.imagePath else null
+    ): ExportResult = PerformanceMonitor.monitorImageOperation("Export Capsule") {
+        withContext(Dispatchers.IO) {
+            try {
+                if (entries.isEmpty()) {
+                    return@withContext ExportResult.Error("No entries to export")
                 }
-            
-            if (imagePaths.isEmpty()) {
-                return@withContext ExportResult.Error("No valid images found")
-            }
-            
-            // Create export file
-            val exportDir = imageStorage.getExportDir()
-            val fileName = "TimeCapsule_${capsuleName.replace(" ", "_")}_${fileNameFormat.format(Date())}.jpg"
-            val exportFile = File(exportDir, fileName)
-            
-            // Generate collage
-            val collageResult = collageGenerator.generateCollage(
-                imagePaths = imagePaths,
-                outputFile = exportFile,
-                title = capsuleName
-            )
-            
-            when (collageResult) {
-                is CollageResult.Success -> {
-                    ExportResult.Success(
-                        filePath = collageResult.filePath,
-                        fileName = fileName,
-                        imageCount = imagePaths.size
+
+                // Get image paths from entries
+                val imagePaths = PerformanceMonitor.measure("Prepare image paths") {
+                    entries
+                        .sortedBy { it.dayNumber }
+                        .mapNotNull { entry ->
+                            val file = File(entry.imagePath)
+                            if (file.exists()) entry.imagePath else null
+                        }
+                }
+
+                if (imagePaths.isEmpty()) {
+                    return@withContext ExportResult.Error("No valid images found")
+                }
+
+                // Create export file
+                val exportDir = imageStorage.getExportDir()
+                val fileName = "TimeCapsule_${capsuleName.replace(" ", "_")}_${fileNameFormat.format(Date())}.jpg"
+                val exportFile = File(exportDir, fileName)
+
+                // Generate collage with performance monitoring
+                val collageResult = PerformanceMonitor.measureSuspend("Generate collage") {
+                    collageGenerator.generateCollage(
+                        imagePaths = imagePaths,
+                        outputFile = exportFile,
+                        title = capsuleName
                     )
                 }
-                is CollageResult.Error -> {
-                    ExportResult.Error(collageResult.message)
+
+                when (collageResult) {
+                    is CollageResult.Success -> {
+                        ExportResult.Success(
+                            filePath = collageResult.filePath,
+                            fileName = fileName,
+                            imageCount = imagePaths.size
+                        )
+                    }
+                    is CollageResult.Error -> {
+                        ExportResult.Error(collageResult.message)
+                    }
                 }
+
+            } catch (e: Exception) {
+                ExportResult.Error("Export failed: ${e.message}")
             }
-            
-        } catch (e: Exception) {
-            ExportResult.Error("Export failed: ${e.message}")
         }
     }
     
@@ -119,9 +127,12 @@ class ExportManager @Inject constructor(
             // For now, we'll just ensure the file is in a shareable location
             
             // Trigger media scan so the file appears in gallery
-            val intent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-            intent.data = Uri.fromFile(file)
-            context.sendBroadcast(intent)
+            MediaScannerConnection.scanFile(
+                context,
+                arrayOf(file.absolutePath),
+                arrayOf("image/jpeg"),
+                null
+            )
             
             true
         } catch (e: Exception) {

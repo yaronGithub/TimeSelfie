@@ -14,6 +14,9 @@ interface CapsuleEntryDao {
     @Query("SELECT * FROM capsule_entries WHERE capsuleId = :capsuleId ORDER BY dayNumber ASC")
     fun getEntriesForCapsule(capsuleId: Long): Flow<List<CapsuleEntry>>
 
+    @Query("SELECT * FROM capsule_entries WHERE capsuleId = :capsuleId ORDER BY dayNumber ASC LIMIT :limit OFFSET :offset")
+    suspend fun getEntriesForCapsulePaged(capsuleId: Long, limit: Int, offset: Int): List<CapsuleEntry>
+
     @Query("SELECT * FROM capsule_entries WHERE capsuleId = :capsuleId AND date = :date")
     suspend fun getEntryByDate(capsuleId: Long, date: String): CapsuleEntry?
 

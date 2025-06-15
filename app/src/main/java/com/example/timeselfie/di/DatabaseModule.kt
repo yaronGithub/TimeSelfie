@@ -2,6 +2,7 @@ package com.example.timeselfie.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.timeselfie.data.database.TimeSelfieDatabase
 import com.example.timeselfie.data.database.dao.AppSettingsDao
 import com.example.timeselfie.data.database.dao.CapsuleEntryDao
@@ -28,7 +29,9 @@ object DatabaseModule {
             context.applicationContext,
             TimeSelfieDatabase::class.java,
             "time_selfie_database"
-        ).build()
+        )
+        .setJournalMode(RoomDatabase.JournalMode.WRITE_AHEAD_LOGGING) // Enable WAL for better performance
+        .build()
     }
 
     @Provides

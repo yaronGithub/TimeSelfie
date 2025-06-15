@@ -6,9 +6,11 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- Storage permissions -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <!-- Camera features -->
     <uses-feature
@@ -28,6 +30,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TimeSelfie"
+        android:hardwareAccelerated="true"
+        android:largeHeap="false"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"

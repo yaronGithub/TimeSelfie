@@ -3,6 +3,8 @@ package com.example.timeselfie.ui.screens.onboarding
 import android.Manifest
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,16 +44,30 @@ fun OnboardingScreen(
     val permissionsState = rememberMultiplePermissionsState(
         permissions = listOf(
             Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                Manifest.permission.READ_MEDIA_IMAGES
+            } else {
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            }
         )
     )
     
     // Check if all permissions are granted
     val allPermissionsGranted = permissionsState.allPermissionsGranted
-    
+
+    // Debug permissions state
+    LaunchedEffect(allPermissionsGranted) {
+        println("DEBUG: All permissions granted: $allPermissionsGranted")
+        permissionsState.permissions.forEach { permission ->
+            println("DEBUG: Permission ${permission.permission}: granted=${permission.status.isGranted}, shouldShowRationale=${permission.status.shouldShowRationale}")
+        }
+    }
+
     // Navigate to timeline when onboarding is complete
     LaunchedEffect(uiState.isOnboardingComplete) {
+        Log.d("OnboardingScreen", "LaunchedEffect triggered: isOnboardingComplete=${uiState.isOnboardingComplete}")
         if (uiState.isOnboardingComplete) {
+            Log.d("OnboardingScreen", "Calling onNavigateToTimeline()")
             onNavigateToTimeline()
         }
     }
@@ -92,35 +108,40 @@ fun OnboardingScreen(
             title = "Daily Selfies",
             description = "Take a selfie each day and capture your mood with one word"
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         FeatureCard(
             icon = Icons.Default.GridView,
             title = "Timeline View",
             description = "See your 30-day journey in a beautiful grid layout"
         )
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         FeatureCard(
             icon = Icons.Default.Share,
             title = "Export & Share",
             description = "Create a collage of your time capsule and share with friends"
         )
-        
+
         Spacer(modifier = Modifier.height(48.dp))
-        
+
         // Permissions section
         if (!allPermissionsGranted) {
             PermissionsSection(
                 permissionsState = permissionsState,
-                onRequestPermissions = { permissionsState.launchMultiplePermissionRequest() }
+                onRequestPermissions = {
+                    permissionsState.launchMultiplePermissionRequest()
+                }
             )
         } else {
             // Get started button
             Button(
-                onClick = { viewModel.completeOnboarding() },
+                onClick = {
+                    Log.d("OnboardingScreen", "Get Started button clicked")
+                    viewModel.completeOnboarding()
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
@@ -240,9 +261,14 @@ private fun PermissionsSection(
             Button(
                 onClick = onRequestPermissions,
                 colors = ButtonDefaults.buttonColors(containerColor = AccentPink),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Grant Permissions")
+                Text(
+                    text = "Grant Permissions",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }

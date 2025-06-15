@@ -1,5 +1,6 @@
 package com.example.timeselfie.ui.screens.onboarding
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.timeselfie.data.repository.SettingsRepository
@@ -25,11 +26,16 @@ class OnboardingViewModel @Inject constructor(
      * Mark onboarding as complete and navigate to main app.
      */
     fun completeOnboarding() {
+        Log.d("OnboardingViewModel", "completeOnboarding() called")
         viewModelScope.launch {
             try {
+                Log.d("OnboardingViewModel", "Setting onboarding complete to true")
                 settingsRepository.setOnboardingComplete(true)
+                Log.d("OnboardingViewModel", "Updating UI state")
                 _uiState.value = _uiState.value.copy(isOnboardingComplete = true)
+                Log.d("OnboardingViewModel", "UI state updated: ${_uiState.value}")
             } catch (e: Exception) {
+                Log.e("OnboardingViewModel", "Error completing onboarding", e)
                 _uiState.value = _uiState.value.copy(
                     error = "Failed to save onboarding state: ${e.message}"
                 )

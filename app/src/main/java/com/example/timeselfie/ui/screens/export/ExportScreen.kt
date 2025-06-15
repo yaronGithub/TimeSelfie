@@ -1,5 +1,6 @@
 package com.example.timeselfie.ui.screens.export
 
+import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,7 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
@@ -38,7 +39,12 @@ fun ExportScreen(onNavigateBack: () -> Unit, viewModel: ExportViewModel = hiltVi
     val shareLauncher =
             rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.StartActivityForResult()
-            ) { /* Handle result if needed */}
+            ) { result ->
+                // Handle share result - could show success message or handle errors
+                if (result.resultCode == Activity.RESULT_OK) {
+                    // Share was successful, could show a toast or update UI
+                }
+            }
 
     // Handle messages and errors
     LaunchedEffect(uiState.message) {
@@ -61,7 +67,7 @@ fun ExportScreen(onNavigateBack: () -> Unit, viewModel: ExportViewModel = hiltVi
                         title = { Text("Export Time Capsule") },
                         navigationIcon = {
                             IconButton(onClick = onNavigateBack) {
-                                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                             }
                         },
                         colors =
@@ -82,13 +88,16 @@ fun ExportScreen(onNavigateBack: () -> Unit, viewModel: ExportViewModel = hiltVi
                                 .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            val errorMessage = uiState.error
             when {
                 uiState.isLoading -> {
                     LoadingContent()
                 }
-                uiState.error != null -> {
-                    val errorMessage = uiState.error!!
-                    ErrorContent(error = errorMessage, onRetry = { /* Retry logic */})
+                errorMessage != null -> {
+                    ErrorContent(error = errorMessage, onRetry = {
+                        viewModel.clearError()
+                        viewModel.loadCapsuleData()
+                    })
                 }
                 else -> {
                     ExportContent(
@@ -121,7 +130,7 @@ private fun LoadingContent() {
 }
 
 @Composable
-private fun ErrorContent(error: String, onRetry: () -> Unit) {
+private fun ErrorContent(error: String?, onRetry: () -> Unit) {
     Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -130,7 +139,7 @@ private fun ErrorContent(error: String, onRetry: () -> Unit) {
         Text(text = "Error", style = MaterialTheme.typography.headlineSmall, color = ErrorLight)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-                text = error,
+                text = error ?: "An unknown error occurred",
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = Gray700
@@ -207,7 +216,7 @@ private fun CapsuleSummaryCard(
             // Progress indicator
             Box(modifier = Modifier.size(120.dp), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator(
-                        progress = completionPercentage / 100f,
+                        progress = { completionPercentage / 100f },
                         modifier = Modifier.size(120.dp),
                         color = Primary,
                         strokeWidth = 8.dp,
@@ -275,7 +284,7 @@ private fun ExportSection(
             if (isExporting) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     LinearProgressIndicator(
-                            progress = exportProgress,
+                            progress = { exportProgress },
                             modifier =
                                     Modifier.fillMaxWidth()
                                             .height(8.dp)

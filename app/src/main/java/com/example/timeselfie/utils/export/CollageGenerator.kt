@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import androidx.core.graphics.scale
 import coil.ImageLoader
 import coil.request.ImageRequest
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,7 @@ class CollageGenerator @Inject constructor(
         private const val GRID_PADDING = 8 // Padding between images
         private const val BORDER_SIZE = 4 // Border around each image
         private const val JPEG_QUALITY = 90
+        private const val MAX_IMAGES_PER_BATCH = 4 // Process images in batches to reduce memory usage
     }
     
     /**
@@ -66,60 +68,75 @@ class CollageGenerator @Inject constructor(
                 drawTitle(canvas, title, COLLAGE_SIZE, 100)
             }
             
-            // Load and draw images
+            // Load and draw images with memory optimization
             val imageLoader = ImageLoader(context)
             val paint = Paint().apply {
                 isAntiAlias = true
                 isFilterBitmap = true
             }
-            
+
             // Border paint
             val borderPaint = Paint().apply {
                 color = Color.LTGRAY
                 style = Paint.Style.STROKE
                 strokeWidth = BORDER_SIZE.toFloat()
             }
-            
-            for (i in imagePaths.indices) {
-                val row = i / gridSize
-                val col = i % gridSize
-                
-                val x = GRID_PADDING + col * (cellSize + GRID_PADDING)
-                val y = yOffset + GRID_PADDING + row * (cellSize + GRID_PADDING)
-                
-                try {
-                    // Load image
-                    val request = ImageRequest.Builder(context)
-                        .data(imagePaths[i])
-                        .build()
-                    
-                    val drawable = imageLoader.execute(request).drawable
-                    val bitmap = (drawable as? BitmapDrawable)?.bitmap
-                    
-                    if (bitmap != null) {
-                        // Scale and crop image to fit cell
-                        val scaledBitmap = scaleCenterCrop(bitmap, cellSize, cellSize)
-                        
-                        // Draw image
-                        canvas.drawBitmap(scaledBitmap, x.toFloat(), y.toFloat(), paint)
-                        
-                        // Draw border
-                        canvas.drawRect(
-                            x.toFloat() - BORDER_SIZE/2,
-                            y.toFloat() - BORDER_SIZE/2,
-                            (x + cellSize).toFloat() + BORDER_SIZE/2,
-                            (y + cellSize).toFloat() + BORDER_SIZE/2,
-                            borderPaint
-                        )
-                        
-                        scaledBitmap.recycle()
-                    } else {
-                        // Draw placeholder for missing image
+
+            // Process images in batches to reduce memory usage
+            for (batchStart in imagePaths.indices step MAX_IMAGES_PER_BATCH) {
+                val batchEnd = minOf(batchStart + MAX_IMAGES_PER_BATCH, imagePaths.size)
+
+                for (i in batchStart until batchEnd) {
+                    val row = i / gridSize
+                    val col = i % gridSize
+
+                    val x = GRID_PADDING + col * (cellSize + GRID_PADDING)
+                    val y = yOffset + GRID_PADDING + row * (cellSize + GRID_PADDING)
+
+                    try {
+                        // Load image with size constraints to reduce memory usage
+                        val request = ImageRequest.Builder(context)
+                            .data(imagePaths[i])
+                            .size(cellSize, cellSize) // Limit size during loading
+                            .allowHardware(false) // Ensure we can access bitmap
+                            .build()
+
+                        val drawable = imageLoader.execute(request).drawable
+                        val bitmap = (drawable as? BitmapDrawable)?.bitmap
+
+                        if (bitmap != null) {
+                            // Scale and crop image to fit cell
+                            val scaledBitmap = scaleCenterCrop(bitmap, cellSize, cellSize)
+
+                            // Draw image
+                            canvas.drawBitmap(scaledBitmap, x.toFloat(), y.toFloat(), paint)
+
+                            // Draw border
+                            canvas.drawRect(
+                                x.toFloat() - BORDER_SIZE/2,
+                                y.toFloat() - BORDER_SIZE/2,
+                                (x + cellSize).toFloat() + BORDER_SIZE/2,
+                                (y + cellSize).toFloat() + BORDER_SIZE/2,
+                                borderPaint
+                            )
+
+                            // Clean up immediately
+                            if (scaledBitmap != bitmap) {
+                                scaledBitmap.recycle()
+                            }
+                        } else {
+                            // Draw placeholder for missing image
+                            drawPlaceholder(canvas, x, y, cellSize)
+                        }
+                    } catch (e: Exception) {
+                        // Draw placeholder for failed image
                         drawPlaceholder(canvas, x, y, cellSize)
                     }
-                } catch (e: Exception) {
-                    // Draw placeholder for failed image
-                    drawPlaceholder(canvas, x, y, cellSize)
+                }
+
+                // Force garbage collection between batches for large collages
+                if (imagePaths.size > 16) {
+                    System.gc()
                 }
             }
             
@@ -158,7 +175,7 @@ class CollageGenerator @Inject constructor(
         val scaledHeight = (sourceHeight * scale).toInt()
         
         // Scale bitmap
-        val scaledBitmap = Bitmap.createScaledBitmap(source, scaledWidth, scaledHeight, true)
+        val scaledBitmap = source.scale(scaledWidth, scaledHeight)
         
         // Calculate crop position (center)
         val cropX = (scaledWidth - targetWidth) / 2

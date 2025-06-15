@@ -30,7 +30,7 @@ constructor(
         loadCapsuleData()
     }
 
-    private fun loadCapsuleData() {
+    fun loadCapsuleData() {
         viewModelScope.launch {
             try {
                 _uiState.value = _uiState.value.copy(isLoading = true, error = null)

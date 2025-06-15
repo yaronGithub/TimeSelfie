@@ -19,7 +19,12 @@ import androidx.room.PrimaryKey
             onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["capsuleId", "date"], unique = true)]
+    indices = [
+        Index(value = ["capsuleId"]),
+        Index(value = ["date"]),
+        Index(value = ["capsuleId", "date"], unique = true),
+        Index(value = ["createdAt"])
+    ]
 )
 data class CapsuleEntry(
     @PrimaryKey(autoGenerate = true)

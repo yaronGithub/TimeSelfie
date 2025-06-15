@@ -10,7 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Refresh
@@ -123,7 +123,7 @@ fun DailyEntryScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -208,10 +208,18 @@ fun DailyEntryScreen(
                 ) {
                     Button(
                         onClick = {
-                            if (cameraPermissionState.status.isGranted) {
-                                showCamera = true
-                            } else {
-                                cameraPermissionState.launchPermissionRequest()
+                            when {
+                                cameraPermissionState.status.isGranted -> {
+                                    showCamera = true
+                                }
+                                cameraPermissionState.status.shouldShowRationale -> {
+                                    // Show rationale and request permission
+                                    cameraPermissionState.launchPermissionRequest()
+                                }
+                                else -> {
+                                    // First time or permanently denied
+                                    cameraPermissionState.launchPermissionRequest()
+                                }
                             }
                         },
                         modifier = Modifier.weight(1f),

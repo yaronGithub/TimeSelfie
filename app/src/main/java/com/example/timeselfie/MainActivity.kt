@@ -1,6 +1,7 @@
 package com.example.timeselfie
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,7 +18,6 @@ import com.example.timeselfie.ui.screens.timeline.TimelineScreen
 import com.example.timeselfie.ui.theme.TimeSelfieTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlinx.coroutines.runBlocking
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -31,23 +31,32 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
 
                 // Determine start destination based on onboarding status
-                val startDestination = remember {
-                    runBlocking {
-                        if (settingsRepository.isOnboardingComplete()) {
-                            "timeline"
-                        } else {
-                            "onboarding"
-                        }
+                var startDestination by remember { mutableStateOf<String?>(null) }
+
+                // Load onboarding status asynchronously
+                LaunchedEffect(Unit) {
+                    Log.d("MainActivity", "Loading onboarding status...")
+                    val isComplete = settingsRepository.isOnboardingComplete()
+                    Log.d("MainActivity", "Onboarding complete: $isComplete")
+                    startDestination = if (isComplete) {
+                        "timeline"
+                    } else {
+                        "onboarding"
                     }
+                    Log.d("MainActivity", "Start destination set to: $startDestination")
                 }
 
-                NavHost(navController = navController, startDestination = startDestination) {
+                // Show loading until start destination is determined
+                startDestination?.let { destination ->
+                    NavHost(navController = navController, startDestination = destination) {
                     composable("onboarding") {
                         OnboardingScreen(
                                 onNavigateToTimeline = {
+                                    Log.d("MainActivity", "onNavigateToTimeline called")
                                     navController.navigate("timeline") {
                                         popUpTo("onboarding") { inclusive = true }
                                     }
+                                    Log.d("MainActivity", "Navigation to timeline completed")
                                 }
                         )
                     }
@@ -65,6 +74,7 @@ class MainActivity : ComponentActivity() {
                     composable("export") {
                         ExportScreen(onNavigateBack = { navController.popBackStack() })
                     }
+                }
                 }
             }
         }

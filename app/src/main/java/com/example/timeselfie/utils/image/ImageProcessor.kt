@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -21,6 +22,37 @@ class ImageProcessor(private val context: Context) {
         private const val MAX_IMAGE_SIZE = 1024
         private const val THUMBNAIL_SIZE = 200
         private const val JPEG_QUALITY = 85
+        private const val MEMORY_THRESHOLD_MB = 50 // Force GC if memory usage exceeds this
+
+        /**
+         * Calculate the largest inSampleSize value that is a power of 2 and keeps both
+         * height and width larger than the requested height and width.
+         */
+        private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+            val (height: Int, width: Int) = options.run { outHeight to outWidth }
+            var inSampleSize = 1
+
+            if (height > reqHeight || width > reqWidth) {
+                val halfHeight: Int = height / 2
+                val halfWidth: Int = width / 2
+
+                while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+                    inSampleSize *= 2
+                }
+            }
+            return inSampleSize
+        }
+
+        /**
+         * Check memory usage and force garbage collection if needed.
+         */
+        private fun checkMemoryUsage() {
+            val runtime = Runtime.getRuntime()
+            val usedMemory = (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024
+            if (usedMemory > MEMORY_THRESHOLD_MB) {
+                System.gc()
+            }
+        }
     }
     
     /**
@@ -28,15 +60,29 @@ class ImageProcessor(private val context: Context) {
      */
     suspend fun compressImage(sourceUri: Uri, targetFile: File): Boolean = withContext(Dispatchers.IO) {
         try {
+            // Use BitmapFactory.Options to decode efficiently
+            val options = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+
             val inputStream = context.contentResolver.openInputStream(sourceUri)
-            val originalBitmap = BitmapFactory.decodeStream(inputStream)
+            BitmapFactory.decodeStream(inputStream, null, options)
             inputStream?.close()
-            
+
+            // Calculate sample size to reduce memory usage
+            options.inSampleSize = calculateInSampleSize(options, MAX_IMAGE_SIZE, MAX_IMAGE_SIZE)
+            options.inJustDecodeBounds = false
+            options.inPreferredConfig = Bitmap.Config.RGB_565 // Use less memory
+
+            val inputStream2 = context.contentResolver.openInputStream(sourceUri)
+            val originalBitmap = BitmapFactory.decodeStream(inputStream2, null, options)
+            inputStream2?.close()
+
             if (originalBitmap == null) return@withContext false
-            
+
             // Rotate image if needed based on EXIF data
             val rotatedBitmap = rotateImageIfRequired(originalBitmap, sourceUri)
-            
+
             // Resize image if it's too large
             val resizedBitmap = resizeImage(rotatedBitmap, MAX_IMAGE_SIZE)
             
@@ -51,7 +97,10 @@ class ImageProcessor(private val context: Context) {
             }
             originalBitmap.recycle()
             resizedBitmap.recycle()
-            
+
+            // Check memory usage after processing
+            checkMemoryUsage()
+
             success
         } catch (e: Exception) {
             e.printStackTrace()
@@ -106,7 +155,7 @@ class ImageProcessor(private val context: Context) {
         val newWidth = (width * ratio).toInt()
         val newHeight = (height * ratio).toInt()
         
-        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+        return bitmap.scale(newWidth, newHeight)
     }
     
     /**

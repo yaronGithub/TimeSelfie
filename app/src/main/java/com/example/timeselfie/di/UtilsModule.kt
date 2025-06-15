@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.timeselfie.utils.export.CollageGenerator
 import com.example.timeselfie.utils.export.ExportManager
 import com.example.timeselfie.utils.image.ImageProcessor
+import com.example.timeselfie.utils.performance.PerformanceMonitor
 import com.example.timeselfie.utils.storage.ImageStorage
 import dagger.Module
 import dagger.Provides
