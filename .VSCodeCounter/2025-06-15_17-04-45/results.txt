@@ -1,0 +1,149 @@
+Date : 2025-06-15 17:04:45
+Directory : d:\MyApps\TimeSelfie
+Total : 64 files,  4110 codes, 476 comments, 630 blanks, all 5216 lines
+
+Languages
++-----------------+------------+------------+------------+------------+------------+
+| language        | files      | code       | comment    | blank      | total      |
++-----------------+------------+------------+------------+------------+------------+
+| Kotlin          |         37 |      3,003 |        395 |        488 |      3,886 |
+| Markdown        |          1 |        488 |          0 |         89 |        577 |
+| XML             |         20 |        463 |         18 |         10 |        491 |
+| Kotlinscript    |          3 |        108 |         14 |         20 |        142 |
+| Batch           |          1 |         39 |         29 |         22 |         90 |
+| Java Properties |          2 |          9 |         20 |          1 |         30 |
++-----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |         64 |      4,110 |        476 |        630 |      5,216 |
+| . (Files)                                                                                                  |          4 |         72 |         49 |         24 |        145 |
+| .idea                                                                                                      |          9 |        165 |          0 |          0 |        165 |
+| .idea (Files)                                                                                              |          8 |        104 |          0 |          0 |        104 |
+| .idea\inspectionProfiles                                                                                   |          1 |         61 |          0 |          0 |         61 |
+| app                                                                                                        |         49 |      3,380 |        426 |        516 |      4,322 |
+| app (Files)                                                                                                |          1 |         79 |         13 |         18 |        110 |
+| app\src                                                                                                    |         48 |      3,301 |        413 |        498 |      4,212 |
+| app\src\androidTest                                                                                        |          1 |         14 |          6 |          4 |         24 |
+| app\src\androidTest\java                                                                                   |          1 |         14 |          6 |          4 |         24 |
+| app\src\androidTest\java\com                                                                               |          1 |         14 |          6 |          4 |         24 |
+| app\src\androidTest\java\com\example                                                                       |          1 |         14 |          6 |          4 |         24 |
+| app\src\androidTest\java\com\example\timeselfie                                                            |          1 |         14 |          6 |          4 |         24 |
+| app\src\main                                                                                               |         46 |      3,278 |        402 |        491 |      4,171 |
+| app\src\main (Files)                                                                                       |          1 |         45 |          4 |          7 |         56 |
+| app\src\main\java                                                                                          |         35 |      2,980 |        384 |        481 |      3,845 |
+| app\src\main\java\com                                                                                      |         35 |      2,980 |        384 |        481 |      3,845 |
+| app\src\main\java\com\example                                                                              |         35 |      2,980 |        384 |        481 |      3,845 |
+| app\src\main\java\com\example\timeselfie                                                                   |         35 |      2,980 |        384 |        481 |      3,845 |
+| app\src\main\java\com\example\timeselfie (Files)                                                           |          2 |         74 |          5 |         12 |         91 |
+| app\src\main\java\com\example\timeselfie\data                                                              |         13 |        399 |         94 |        103 |        596 |
+| app\src\main\java\com\example\timeselfie\data\database                                                     |         10 |        215 |         39 |         65 |        319 |
+| app\src\main\java\com\example\timeselfie\data\database (Files)                                             |          1 |         47 |          4 |          6 |         57 |
+| app\src\main\java\com\example\timeselfie\data\database\converters                                          |          1 |         13 |          4 |          5 |         22 |
+| app\src\main\java\com\example\timeselfie\data\database\dao                                                 |          4 |         87 |         16 |         42 |        145 |
+| app\src\main\java\com\example\timeselfie\data\database\entities                                            |          4 |         68 |         15 |         12 |         95 |
+| app\src\main\java\com\example\timeselfie\data\models                                                       |          1 |         31 |         15 |          6 |         52 |
+| app\src\main\java\com\example\timeselfie\data\repository                                                   |          2 |        153 |         40 |         32 |        225 |
+| app\src\main\java\com\example\timeselfie\di                                                                |          2 |         86 |          4 |         15 |        105 |
+| app\src\main\java\com\example\timeselfie\ui                                                                |         12 |      1,747 |        109 |        190 |      2,046 |
+| app\src\main\java\com\example\timeselfie\ui\components                                                     |          1 |        167 |         10 |         17 |        194 |
+| app\src\main\java\com\example\timeselfie\ui\components\camera                                              |          1 |        167 |         10 |         17 |        194 |
+| app\src\main\java\com\example\timeselfie\ui\screens                                                        |          8 |      1,468 |         74 |        156 |      1,698 |
+| app\src\main\java\com\example\timeselfie\ui\screens\daily                                                  |          2 |        408 |         24 |         44 |        476 |
+| app\src\main\java\com\example\timeselfie\ui\screens\export                                                 |          2 |        527 |         16 |         54 |        597 |
+| app\src\main\java\com\example\timeselfie\ui\screens\onboarding                                             |          2 |        244 |         23 |         38 |        305 |
+| app\src\main\java\com\example\timeselfie\ui\screens\timeline                                               |          2 |        289 |         11 |         20 |        320 |
+| app\src\main\java\com\example\timeselfie\ui\theme                                                          |          3 |        112 |         25 |         17 |        154 |
+| app\src\main\java\com\example\timeselfie\utils                                                             |          6 |        674 |        172 |        161 |      1,007 |
+| app\src\main\java\com\example\timeselfie\utils\camera                                                      |          1 |         82 |         13 |         22 |        117 |
+| app\src\main\java\com\example\timeselfie\utils\date                                                        |          1 |         45 |         21 |         12 |         78 |
+| app\src\main\java\com\example\timeselfie\utils\export                                                      |          2 |        303 |         69 |         67 |        439 |
+| app\src\main\java\com\example\timeselfie\utils\image                                                       |          1 |        104 |         26 |         27 |        157 |
+| app\src\main\java\com\example\timeselfie\utils\storage                                                     |          1 |        140 |         43 |         33 |        216 |
+| app\src\main\res                                                                                           |         10 |        253 |         14 |          3 |        270 |
+| app\src\main\res\drawable                                                                                  |          2 |        200 |          0 |          1 |        201 |
+| app\src\main\res\mipmap-anydpi-v26                                                                         |          2 |         12 |          0 |          0 |         12 |
+| app\src\main\res\values                                                                                    |          3 |         17 |          0 |          1 |         18 |
+| app\src\main\res\xml                                                                                       |          3 |         24 |         14 |          1 |         39 |
+| app\src\test                                                                                               |          1 |          9 |          5 |          3 |         17 |
+| app\src\test\java                                                                                          |          1 |          9 |          5 |          3 |         17 |
+| app\src\test\java\com                                                                                      |          1 |          9 |          5 |          3 |         17 |
+| app\src\test\java\com\example                                                                              |          1 |          9 |          5 |          3 |         17 |
+| app\src\test\java\com\example\timeselfie                                                                   |          1 |          9 |          5 |          3 |         17 |
+| docs                                                                                                       |          1 |        488 |          0 |         89 |        577 |
+| gradle                                                                                                     |          1 |          5 |          1 |          1 |          7 |
+| gradle\wrapper                                                                                             |          1 |          5 |          1 |          1 |          7 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+-----------------+------------+------------+------------+------------+
+| filename                                                                                                   | language        | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+-----------------+------------+------------+------------+------------+
+| d:\MyApps\TimeSelfie\.idea\AndroidProjectSystem.xml                                                        | XML             |          6 |          0 |          0 |          6 |
+| d:\MyApps\TimeSelfie\.idea\appInsightsSettings.xml                                                         | XML             |         26 |          0 |          0 |         26 |
+| d:\MyApps\TimeSelfie\.idea\compiler.xml                                                                    | XML             |          6 |          0 |          0 |          6 |
+| d:\MyApps\TimeSelfie\.idea\deploymentTargetSelector.xml                                                    | XML             |         10 |          0 |          0 |         10 |
+| d:\MyApps\TimeSelfie\.idea\gradle.xml                                                                      | XML             |         19 |          0 |          0 |         19 |
+| d:\MyApps\TimeSelfie\.idea\inspectionProfiles\Project_Default.xml                                          | XML             |         61 |          0 |          0 |         61 |
+| d:\MyApps\TimeSelfie\.idea\migrations.xml                                                                  | XML             |         10 |          0 |          0 |         10 |
+| d:\MyApps\TimeSelfie\.idea\misc.xml                                                                        | XML             |         10 |          0 |          0 |         10 |
+| d:\MyApps\TimeSelfie\.idea\runConfigurations.xml                                                           | XML             |         17 |          0 |          0 |         17 |
+| d:\MyApps\TimeSelfie\app\build.gradle.kts                                                                  | Kotlinscript    |         79 |         13 |         18 |        110 |
+| d:\MyApps\TimeSelfie\app\src\androidTest\java\com\example\timeselfie\ExampleInstrumentedTest.kt            | Kotlin          |         14 |          6 |          4 |         24 |
+| d:\MyApps\TimeSelfie\app\src\main\AndroidManifest.xml                                                      | XML             |         45 |          4 |          7 |         56 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\MainActivity.kt                              | Kotlin          |         69 |          1 |          9 |         79 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\TimeSelfieApplication.kt                     | Kotlin          |          5 |          4 |          3 |         12 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\TimeSelfieDatabase.kt          | Kotlin          |         47 |          4 |          6 |         57 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\converters\Converters.kt       | Kotlin          |         13 |          4 |          5 |         22 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\dao\AppSettingsDao.kt          | Kotlin          |         16 |          4 |          8 |         28 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\dao\CapsuleEntryDao.kt         | Kotlin          |         25 |          4 |         12 |         41 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\dao\MoodEntryDao.kt            | Kotlin          |         23 |          4 |         11 |         38 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\dao\TimeCapsuleDao.kt          | Kotlin          |         23 |          4 |         11 |         38 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\entities\AppSettings.kt        | Kotlin          |         10 |          3 |          3 |         16 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\entities\CapsuleEntry.kt       | Kotlin          |         30 |          4 |          3 |         37 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\entities\MoodEntry.kt          | Kotlin          |         13 |          4 |          3 |         20 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\database\entities\TimeCapsule.kt        | Kotlin          |         15 |          4 |          3 |         22 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\models\UiState.kt                       | Kotlin          |         31 |         15 |          6 |         52 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\repository\SettingsRepository.kt        | Kotlin          |         85 |         34 |         14 |        133 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\data\repository\TimeCapsuleRepository.kt     | Kotlin          |         68 |          6 |         18 |         92 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\di\DatabaseModule.kt                         | Kotlin          |         43 |          3 |          8 |         54 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\di\UtilsModule.kt                            | Kotlin          |         43 |          1 |          7 |         51 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\components\camera\CameraPreview.kt        | Kotlin          |        167 |         10 |         17 |        194 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\daily\DailyEntryScreen.kt         | Kotlin          |        279 |         14 |         20 |        313 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\daily\DailyEntryViewModel.kt      | Kotlin          |        129 |         10 |         24 |        163 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\export\ExportScreen.kt            | Kotlin          |        356 |         12 |         33 |        401 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\export\ExportViewModel.kt         | Kotlin          |        171 |          4 |         21 |        196 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\onboarding\OnboardingScreen.kt    | Kotlin          |        208 |         11 |         31 |        250 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\onboarding\OnboardingViewModel.kt | Kotlin          |         36 |         12 |          7 |         55 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\timeline\TimelineScreen.kt        | Kotlin          |        225 |          5 |         10 |        240 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\screens\timeline\TimelineViewModel.kt     | Kotlin          |         64 |          6 |         10 |         80 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\theme\Color.kt                            | Kotlin          |         41 |          7 |          9 |         57 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\theme\Theme.kt                            | Kotlin          |         56 |          1 |          6 |         63 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\ui\theme\Type.kt                             | Kotlin          |         15 |         17 |          2 |         34 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\camera\CameraManager.kt                | Kotlin          |         82 |         13 |         22 |        117 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\date\DateUtils.kt                      | Kotlin          |         45 |         21 |         12 |         78 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\export\CollageGenerator.kt             | Kotlin          |        165 |         36 |         39 |        240 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\export\ExportManager.kt                | Kotlin          |        138 |         33 |         28 |        199 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\image\ImageProcessor.kt                | Kotlin          |        104 |         26 |         27 |        157 |
+| d:\MyApps\TimeSelfie\app\src\main\java\com\example\timeselfie\utils\storage\ImageStorage.kt                | Kotlin          |        140 |         43 |         33 |        216 |
+| d:\MyApps\TimeSelfie\app\src\main\res\drawable\ic_launcher_background.xml                                  | XML             |        170 |          0 |          1 |        171 |
+| d:\MyApps\TimeSelfie\app\src\main\res\drawable\ic_launcher_foreground.xml                                  | XML             |         30 |          0 |          0 |         30 |
+| d:\MyApps\TimeSelfie\app\src\main\res\mipmap-anydpi-v26\ic_launcher.xml                                    | XML             |          6 |          0 |          0 |          6 |
+| d:\MyApps\TimeSelfie\app\src\main\res\mipmap-anydpi-v26\ic_launcher_round.xml                              | XML             |          6 |          0 |          0 |          6 |
+| d:\MyApps\TimeSelfie\app\src\main\res\values\colors.xml                                                    | XML             |         10 |          0 |          0 |         10 |
+| d:\MyApps\TimeSelfie\app\src\main\res\values\strings.xml                                                   | XML             |          3 |          0 |          0 |          3 |
+| d:\MyApps\TimeSelfie\app\src\main\res\values\themes.xml                                                    | XML             |          4 |          0 |          1 |          5 |
+| d:\MyApps\TimeSelfie\app\src\main\res\xml\backup_rules.xml                                                 | XML             |          9 |          4 |          0 |         13 |
+| d:\MyApps\TimeSelfie\app\src\main\res\xml\data_extraction_rules.xml                                        | XML             |          9 |         10 |          0 |         19 |
+| d:\MyApps\TimeSelfie\app\src\main\res\xml\file_paths.xml                                                   | XML             |          6 |          0 |          1 |          7 |
+| d:\MyApps\TimeSelfie\app\src\test\java\com\example\timeselfie\ExampleUnitTest.kt                           | Kotlin          |          9 |          5 |          3 |         17 |
+| d:\MyApps\TimeSelfie\build.gradle.kts                                                                      | Kotlinscript    |          7 |          1 |          0 |          8 |
+| d:\MyApps\TimeSelfie\docs\CONTEXT.md                                                                       | Markdown        |        488 |          0 |         89 |        577 |
+| d:\MyApps\TimeSelfie\gradle.properties                                                                     | Java Properties |          4 |         19 |          0 |         23 |
+| d:\MyApps\TimeSelfie\gradle\wrapper\gradle-wrapper.properties                                              | Java Properties |          5 |          1 |          1 |          7 |
+| d:\MyApps\TimeSelfie\gradlew.bat                                                                           | Batch           |         39 |         29 |         22 |         90 |
+| d:\MyApps\TimeSelfie\settings.gradle.kts                                                                   | Kotlinscript    |         22 |          0 |          2 |         24 |
+| Total                                                                                                      |                 |      4,110 |        476 |        630 |      5,216 |
++------------------------------------------------------------------------------------------------------------+-----------------+------------+------------+------------+------------+
